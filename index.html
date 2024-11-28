@@ -163,7 +163,7 @@ permissions and limitations under the License.
     var HIDE_S3_ID = true;
     var s3exp_config = {
         Region: '',
-        Bucket: '',
+        Bucket: 'repo.whatap.io',
         CloudFront: '',
         Prefix: '',
         Delimiter: '/'
@@ -176,7 +176,7 @@ permissions and limitations under the License.
         size: 4
     };
 
-    AWS.config.region = 'us-east-1';
+    AWS.config.region = 'ap-northeast-2';
     console.log('Region: ' + AWS.config.region);
 
     // Initialize S3 SDK and the moment library (for time formatting utilities)
@@ -207,31 +207,15 @@ permissions and limitations under the License.
         };
     }
 
+    //https://repo.whatap.io.s3-ap-northeast-2.amazonaws.com/debian
     function object2hrefvirt(bucket, key) {
         var enckey = key.split('/').map(function(x) { return encodeURIComponent(x); }).join('/');
-        var strBucket = ""
-
-        // CloudFront Support
-        if (s3exp_config.CloudFront){
-            strBucket = '.cloudfront.net/'
-        } else {
-            if (AWS.config.region === "us-east-1") {
-                strBucket = '.s3.amazonaws.com/';
-            } else {
-                strBucket = '.s3-' + AWS.config.region + '.amazonaws.com/'
-            }
-        }
-        return document.location.protocol + '//' + bucket + strBucket + enckey;
+        return document.location.protocol + '//repo.whatap.io/' + enckey;
     }
 
     function object2hrefpath(bucket, key) {
         var enckey = key.split('/').map(function(x) { return encodeURIComponent(x); }).join('/');
-
-        if (AWS.config.region === "us-east-1") {
-            return document.location.protocol + "//s3.amazonaws.com/" + bucket + "/" + enckey;
-        } else {
-            return document.location.protocol + "//s3-' + AWS.config.region + '.amazonaws.com/" + bucket + "/" + enckey;
-        }
+        return document.location.protocol + '//repo.whatap.io/' + enckey;
     }
 
     function htmlEscape(str) {
